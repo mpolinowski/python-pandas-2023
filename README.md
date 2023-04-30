@@ -1,19 +1,80 @@
----
-jupyter:
-  jupytext:
-    formats: ipynb,md
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.14.4
-  kernelspec:
-    display_name: Python 3 (ipykernel)
-    language: python
-    name: python3
----
-
 # Pandas Cheat Sheet 2023
+
+<!-- TOC -->
+
+- [Pandas Cheat Sheet 2023](#pandas-cheat-sheet-2023)
+  - [Panda Series](#panda-series)
+    - [Numeric Index](#numeric-index)
+    - [Labelled Index](#labelled-index)
+    - [Fill Missing Data](#fill-missing-data)
+  - [Panda Dataframes](#panda-dataframes)
+    - [Creating a Dataframe from a Numpy Array](#creating-a-dataframe-from-a-numpy-array)
+    - [Creating a Dataframe from a CSV File](#creating-a-dataframe-from-a-csv-file)
+    - [Creating a Dataframe from a Excel File](#creating-a-dataframe-from-a-excel-file)
+    - [Describe Dataframe](#describe-dataframe)
+    - [Dataframe Correlation Matrix](#dataframe-correlation-matrix)
+  - [Dataframes Columns](#dataframes-columns)
+    - [Value Counts for Categorical Values](#value-counts-for-categorical-values)
+    - [Unique Entries in a Column](#unique-entries-in-a-column)
+    - [Selecting Columns](#selecting-columns)
+    - [Renaming Categorical Values](#renaming-categorical-values)
+    - [Value Mapping](#value-mapping)
+    - [Sorting by Columns](#sorting-by-columns)
+    - [Find Min/Max Value in Column](#find-minmax-value-in-column)
+    - [Adding Columns](#adding-columns)
+    - [Removing Columns](#removing-columns)
+  - [Dataframes Rows](#dataframes-rows)
+    - [Setting an Index Column](#setting-an-index-column)
+    - [Selecting Rows](#selecting-rows)
+    - [Removing Rows](#removing-rows)
+    - [Inserting Rows](#inserting-rows)
+    - [Removing Duplicated Rows](#removing-duplicated-rows)
+    - [Selecting n-largest / n-smallest](#selecting-n-largest--n-smallest)
+    - [Selecting Random Sample](#selecting-random-sample)
+    - [Shuffle Dataset](#shuffle-dataset)
+  - [Conditional Filtering](#conditional-filtering)
+    - [Filter by Value](#filter-by-value)
+    - [Filter by Multiple Values](#filter-by-multiple-values)
+    - [Comparing Columns with Crosstab](#comparing-columns-with-crosstab)
+    - [Filter with isin()](#filter-with-isin)
+    - [Filter with between()](#filter-with-between)
+    - [Apply](#apply)
+      - [Apply a Custom Method to a Single Column (Pandas Series)](#apply-a-custom-method-to-a-single-column-pandas-series)
+      - [Apply a Custom Method to Multiple Columns (Pandas Series)](#apply-a-custom-method-to-multiple-columns-pandas-series)
+        - [Lambda Expression](#lambda-expression)
+        - [Numpy Vectorize](#numpy-vectorize)
+  - [Detect Missing Data](#detect-missing-data)
+    - [Drop Missing Data](#drop-missing-data)
+    - [Fill Missing Data](#fill-missing-data-1)
+  - [GroupBy](#groupby)
+    - [GroupBy Multi-Index](#groupby-multi-index)
+    - [Multi-Index Cross-Section](#multi-index-cross-section)
+  - [Aggregation](#aggregation)
+  - [Combining Dataframes](#combining-dataframes)
+    - [Concatenation](#concatenation)
+      - [By Rows](#by-rows)
+      - [By Columns](#by-columns)
+    - [Merge](#merge)
+      - [Inner Join](#inner-join)
+      - [Outer Join](#outer-join)
+      - [Left Join](#left-join)
+      - [Right Join](#right-join)
+      - [Join by left\_on / right\_on](#join-by-left_on--right_on)
+      - [Join Suffixes](#join-suffixes)
+  - [String Method](#string-method)
+    - [Pandas Str()](#pandas-str)
+  - [Date-Time Method](#date-time-method)
+    - [Date-Time Object](#date-time-object)
+  - [Panda I/O](#panda-io)
+    - [CSV](#csv)
+    - [Excel](#excel)
+    - [HTML](#html)
+    - [SQL](#sql)
+      - [Create an In-Memory SQL Database](#create-an-in-memory-sql-database)
+      - [Read SQL Data](#read-sql-data)
+      - [SQL Queries](#sql-queries)
+
+<!-- /TOC -->
 
 ```python
 import numpy as np
@@ -2356,7 +2417,3 @@ sql_df
 | 1 | 82 | 86 |
 | 2 | 87 | 99 |
 | 3 | 21 | 52 |
-
-```python
-
-```
