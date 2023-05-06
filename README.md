@@ -73,6 +73,19 @@
       - [Create an In-Memory SQL Database](#create-an-in-memory-sql-database)
       - [Read SQL Data](#read-sql-data)
       - [SQL Queries](#sql-queries)
+  - [Visualizations Overview](#visualizations-overview)
+    - [Line Plot](#line-plot)
+      - [Subplots](#subplots)
+    - [Bar Plot](#bar-plot)
+    - [Histogram](#histogram)
+    - [Stacked Bar Plot](#stacked-bar-plot)
+    - [Box Plot](#box-plot)
+    - [Area Plot](#area-plot)
+    - [Scatter Plot](#scatter-plot)
+    - [Hex Plot](#hex-plot)
+    - [Pie Plot](#pie-plot)
+      - [Subplots](#subplots-1)
+    - [Scatter Matrix](#scatter-matrix)
 
 <!-- /TOC -->
 
@@ -2417,3 +2430,426 @@ sql_df
 | 1 | 82 | 86 |
 | 2 | 87 | 99 |
 | 3 | 21 | 52 |
+
+
+## Visualizations Overview
+
+Pandas Dataframes and Dataseries with Matplotlib and Seaborn
+
+```python
+from numpy.random import randn, randint, uniform, sample
+```
+
+```python
+date_values_df = pd.DataFrame(
+    randn(1000),
+    index = pd.date_range(
+        '2019-10-15',
+        periods=1000
+    ),
+    columns=['value']
+)
+
+timeseries = pd.Series(
+    randn(1000),
+    index = pd.date_range(
+        '2019-10-15',
+        periods=1000
+    )
+)
+```
+
+### Line Plot
+
+```python
+date_values_df['value'] = date_values_df['value'].cumsum()
+date_values_df.plot(title='Dataframe Cummulative Sum', figsize=(12,8))
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_01.webp)
+
+```python
+timeseries = timeseries.cumsum()
+timeseries.plot(title='Timseries Cummulative Sum', figsize=(12,8))
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_02.webp)
+
+
+#### Subplots
+
+```python
+# complete dataset
+iris_ds = sns.load_dataset('iris')
+iris_ds.plot(
+    title='Iris Dataset',
+    figsize=(10,5),
+    legend=True,
+    logy=True
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_03.webp)
+
+```python
+iris_ds.plot(
+    title='Iris Dataset',
+    subplots=True,
+    figsize=(10,5),
+    legend=True,
+    sharex=True,
+    logy=False
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_23.webp)
+
+```python
+iris_ds.plot(
+    title='Iris Dataset',
+    subplots=True,
+    figsize=(10,5),
+    legend=True,
+    sharex=False,
+    layout=(2,2)
+)
+
+plt.tight_layout()
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_24.webp)
+
+```python
+iris_dropped_width = iris_ds.drop(labels=['sepal_width', 'petal_width'], axis=1)
+iris_dropped_width.head()
+```
+
+```python
+iris_dropped_legth = iris_ds[['sepal_width', 'petal_width']]
+iris_dropped_legth.head()
+```
+
+```python
+# twin axes plot
+ax = iris_dropped_width.plot(legend=True)
+ax.legend(loc='upper left')
+iris_dropped_legth.plot(
+    title='Iris Dataset',
+    figsize=(10,5),
+    secondary_y = True,
+    ax = ax
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_04.webp)
+
+
+### Bar Plot
+
+```python
+iris_dropped_species = iris_ds.drop(['species'], axis=1)
+iris_dropped_species.iloc[0].plot.bar(
+    figsize=(10,5),
+    title='Iris Dataset'
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_05.webp)
+
+
+### Histogram
+
+```python
+titanic_ds = sns.load_dataset('titanic')
+titanic_ds.head()
+```
+
+|  | survived | pclass | sex | age | sibsp | parch | fare | embarked | class | who | adult_male | deck | embark_town | alive | alone |
+| -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| 0 | 0 | 3 | male | 22.0 | 1 | 0 | 7.2500 | S | Third | man | True | NaN | Southampton | no | False |
+| 1 | 1 | 1 | female | 38.0 | 1 | 0 | 71.2833 | C | First | woman | False | C | Cherbourg | yes | False |
+| 2 | 1 | 3 | female | 26.0 | 0 | 0 | 7.9250 | S | Third | woman | False | NaN | Southampton | yes | True |
+| 3 | 1 | 1 | female | 35.0 | 1 | 0 | 53.1000 | S | First | woman | False | C | Southampton | yes | False |
+| 4 | 0 | 3 | male | 35.0 | 0 | 0 | 8.0500 | S | Third | man | True | NaN | Southampton | no | True |
+
+```python
+ax = titanic_ds['pclass'].plot.hist(
+    figsize=(10,5),
+    title='Titanic - Passenger by Class Histogram'
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_06.webp)
+
+```python
+iris_ds.plot.hist(
+    title="Iris Dataset - Petal Width Distribution by Species",
+    figsize=(10,5),
+    bins=20,
+    column=["petal_width"],
+    by="species"
+)
+plt.tight_layout()
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_09.webp)
+
+```python
+iris_ds.plot.hist(
+    title="Iris Dataset - Histogram",
+    figsize=(10,5),
+    bins=20,
+    orientation='horizontal'
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_11.webp)
+
+```python
+iris_ds.plot.hist(
+    title="Iris Dataset - Stacked Histogram",
+    figsize=(10,5),
+    bins=50,
+    stacked=True
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_10.webp)
+
+```python
+iris_ds.hist(
+    figsize=(12,8),
+    bins=20,
+    by="species",
+    legend=True
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_12.webp)
+
+```python
+iris_ds.hist(
+    figsize=(12,8),
+    bins=20,
+    color='mediumseagreen'
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_13.webp)
+
+
+### Stacked Bar Plot
+
+```python
+rand_df = pd.DataFrame(randn(10,4), columns=['a', 'b', 'c', 'd'])
+rand_df.head()
+```
+
+|    |  a |  b |  c |  d |
+| -- | -- | -- | -- | -- |
+| 0 | 	-0.085012 | 	1.394898 |	1.790166 |	0.167911 |
+| 1 | 	1.536115 | 	-1.053770 |	0.000237 |	-1.468094 |
+| 2 | 	-1.479892 | 	-0.480497 |	-0.685922 |	-1.975383 |
+| 3 | 	-1.217567 | 	-1.199857 |	0.930655 |	0.478314 |
+| 4 | 	0.119575 | 	-0.480929 |	-0.202524 |	0.728837 |
+
+```python
+# compare distribution of a-d per row
+rand_df.plot.bar(
+    stacked=True,
+    figsize=(10,5)
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_07.webp)
+
+```python
+rand_df.plot.barh(
+    stacked=True,
+    figsize=(10,5)
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_08.webp)
+
+
+### Box Plot
+
+```python
+iris_ds.plot.box(
+    figsize=(12,5),
+    by='species',
+    vert=True
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_14.webp)
+
+```python
+iris_ds.describe()
+```
+
+| | sepal_length | sepal_width | petal_length | petal_width |
+| -- | -- | -- | -- | -- |
+| count |150.000000 | 150.000000 | 150.000000 | 150.000000 |
+| mean |5.843333 | 3.057333 | 3.758000 | 1.199333 |
+| std |0.828066 | 0.435866 | 1.765298 | 0.762238 |
+| min |4.300000 | 2.000000 | 1.000000 | 0.100000 |
+| 25% |5.100000 | 2.800000 | 1.600000 | 0.300000 |
+| 50% |5.800000 | 3.000000 | 4.350000 | 1.300000 |
+| 75% |6.400000 | 3.300000 | 5.100000 | 1.800000 |
+| max |7.900000 | 4.400000 | 6.900000 | 2.500000 |
+
+
+### Area Plot
+
+```python
+iris_ds.plot.area(
+    figsize=(12,5),
+    stacked=True
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_15.webp)
+
+
+### Scatter Plot
+
+```python
+iris_ds.plot.scatter(
+    figsize=(12,5),
+    x='sepal_width',
+    y='sepal_length',
+    c='petal_width',
+    colormap='winter',
+    title='Iris Dataset - Sepal Width vs Sepal Length'
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_16.webp)
+
+```python
+ax = iris_ds.plot.scatter(
+    figsize=(12,5),
+    x='sepal_width',
+    y='petal_width',
+    label='width',
+    c='dodgerblue'
+)
+
+iris_ds.plot.scatter(
+    figsize=(12,5),
+    x='sepal_length',
+    y='petal_length',
+    label='length',
+    c='fuchsia',
+    ax=ax
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_17.webp)
+
+```python
+ax = iris_ds.plot.scatter(
+    figsize=(12,5),
+    x='sepal_length',
+    y='petal_length',
+    label='length',
+    c='fuchsia'
+)
+
+iris_ds.plot.scatter(
+    figsize=(12,5),
+    x='sepal_width',
+    y='petal_width',
+    label='width',
+    c='dodgerblue',
+    ax=ax
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_18.webp)
+
+
+### Hex Plot
+
+```python
+iris_ds.plot.hexbin(
+    figsize=(10,5),
+    x = 'petal_length',
+    y = 'sepal_length',
+    gridsize=10,
+    C='sepal_width',
+    cmap="plasma",
+    title='Sepal & Petal Length vs Sepal Width'
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_19.webp)
+
+
+### Pie Plot
+
+```python
+iris_dropped_species = iris_ds.drop(['species'], axis=1)
+colors = plt.get_cmap('cool')(np.linspace(0.8, 0.1, 4))
+```
+
+```python
+iris_dropped_species.iloc[0].plot.pie(
+    figsize=(8,8),
+    colors=colors,
+    startangle=20,
+    autopct='%.2f',
+    title='Iris Dataset',
+    shadow=True
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_20.webp)
+
+
+#### Subplots
+
+```python
+colors2 = plt.get_cmap('magma')(np.linspace(0.9, 0.1, 4))
+
+sample_df = iris_dropped_species.head(3).T
+sample_df
+```
+
+|			 | 0 | 1 | 2 |
+|	--	 | -- | -- | -- |
+| sepal_length | 5.1 | 4.9 | 4.7 | 
+| sepal_width | 3.5 | 3.0 | 3.2 | 
+| petal_length | 1.4 | 1.4 | 1.3 | 
+| petal_width | 0.2 | 0.2 | 0.2 | 
+
+```python
+sample_df.plot.pie(
+    subplots=True,
+    colors=colors2,
+    figsize=(25,25),
+    fontsize=16
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_21.webp)
+
+
+### Scatter Matrix
+
+```python
+from pandas.plotting import scatter_matrix
+```
+
+```python
+scatter_matrix(
+    iris_dropped_species,
+    figsize=(8,8),
+    diagonal='kde',
+    color='dodgerblue'
+)
+```
+
+![Pandas Visualizations](https://github.com/mpolinowski/python-pandas-2023/blob/master/assets/Python_Pandas_Visualizationst_22.webp)
